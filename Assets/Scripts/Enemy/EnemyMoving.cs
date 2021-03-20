@@ -13,13 +13,12 @@ public class EnemyMoving : MonoBehaviour
     [SerializeField] float StopDistance = 2.0f;
     [SerializeField] Transform Target1;
     [SerializeField] Transform Target2;
-    [SerializeField] Transform Target3;
 
     private bool isAware = false;
     private NavMeshAgent agent;
-    private Transform TheTarget;
+    public Transform TheTarget;
     private float DistanceToTarget = 1;
-    private int TargetNumber = 1;
+    public int TargetNumber = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +30,6 @@ public class EnemyMoving : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TargetNumber = UnityEngine.Random.Range(1, 4);
         if (isAware)
         {
             agent.SetDestination(PCon.transform.position);
@@ -65,8 +63,13 @@ public class EnemyMoving : MonoBehaviour
         {
             agent.SetDestination(TheTarget.position);
         }
-        else if (DistanceToTarget< StopDistance)
+        else if (DistanceToTarget < StopDistance)
         {
+            TargetNumber++;
+            if(TargetNumber > 2)
+            {
+                TargetNumber = 1;
+            }
             SetTarget();
         }
     }
@@ -79,17 +82,13 @@ public class EnemyMoving : MonoBehaviour
 
     private void SetTarget()
     {
-        if(TargetNumber == 1)
+        if (TargetNumber == 1)
         {
             TheTarget = Target1;
         }
         if(TargetNumber == 2)
         {
             TheTarget = Target2;
-        }
-        if(TargetNumber == 3)
-        {
-            TheTarget = Target3;
         }
     }
 }
