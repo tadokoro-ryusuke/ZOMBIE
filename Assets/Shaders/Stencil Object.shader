@@ -53,6 +53,46 @@
             o.Alpha = c.a;
         }
         ENDCG
+
+        Blend SrcColor OneMinusSrcAlpha
+        Pass {
+            Stencil {
+                Ref 0
+                Comp Equal
+            }
+			CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "UnityCG.cginc"
+
+            half3 _Color;
+            half _Alpha;
+
+            struct appdata {
+                float4 vertex : POSITION;
+            };
+
+            struct v2f {
+                float4 vertex : SV_POSITION;
+            };
+
+
+            v2f vert (appdata v) {
+                v2f o;
+
+                o.vertex = UnityObjectToClipPos(v.vertex);
+
+                return o;
+            }
+
+            sampler2D _MainTex;
+
+            fixed4 frag (v2f i) : SV_Target {
+
+                return fixed4(lerp(_Color, 0, _Alpha), 1);
+            }
+			ENDCG
+		}
     }
     FallBack "Diffuse"
 }

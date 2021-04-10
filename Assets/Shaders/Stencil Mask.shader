@@ -16,7 +16,8 @@
 
         Stencil {
             Ref 1
-            Pass replace
+            Pass Replace
+            Comp Always
         }
 
         CGPROGRAM
